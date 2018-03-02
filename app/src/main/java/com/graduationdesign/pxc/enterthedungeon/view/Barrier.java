@@ -1,16 +1,20 @@
 package com.graduationdesign.pxc.enterthedungeon.view;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 
 /**
  * 障碍物
  */
+
 public class Barrier {
     //绘制的位置纵坐标
     public int mPositionY;
     public int mPositionX;
+    private Bitmap bitmap;
     //障碍物的宽度
     private int mWidth;
     //障碍物的高度
@@ -22,10 +26,11 @@ public class Barrier {
     //当前的障碍物类型
 
 
-    public Barrier(int screenWidth, Paint paint) {
+    public Barrier(int screenWidth, Paint paint,Bitmap bitmap) {
         this.mScreenWidth = screenWidth;
         this.mPaint = paint;
         this.mWidth = mScreenWidth / 4;
+        this.bitmap = bitmap;
     }
 
     /**
@@ -33,8 +38,10 @@ public class Barrier {
      */
     public void drawBarrier(Canvas canvas) {
         canvas.save();
-        RectF rectF = new RectF(mPositionX, mPositionY, mWidth + mPositionX, mPositionY + mHeight);
-        canvas.drawRect(rectF, mPaint);
+        Path path = new Path();
+        path.addRect(mPositionX, mPositionY, mWidth + mPositionX, mPositionY + mHeight, Path.Direction.CCW);
+        canvas.clipPath(path);
+        canvas.drawBitmap(bitmap, null, new RectF(mPositionX, mPositionY, mWidth + mPositionX, mPositionY + mHeight), mPaint);
         canvas.restore();
     }
 
