@@ -50,7 +50,8 @@ public class GameLayout extends View {
     //人物左右移动的速度
     private int mPersonMoveSpeed = 20;
     //需要绘制的小人
-    private Bitmap bitmap;
+    private Bitmap bitmapl;
+    private Bitmap bitmapr;
     //需要绘制的障碍
     private Bitmap bitplat;
     //画面中障碍物的位置信息
@@ -102,8 +103,8 @@ public class GameLayout extends View {
         mPaint.setStrokeWidth(10);
 
         //读取本地的img图片
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.zoml);
-
+        bitmapl = BitmapFactory.decodeResource(getResources(), R.drawable.zoml);
+        bitmapr = BitmapFactory.decodeResource(getResources(), R.drawable.zomr);
         //读取本地的img图片
         bitplat = BitmapFactory.decodeResource(getResources(), R.drawable.plat);
         //默认开始自动下落
@@ -132,7 +133,7 @@ public class GameLayout extends View {
         mBarrier = new Barrier(mLayoutWidth, mPaint, bitplat);
         mBarrier.setHeight(mBarrierHeight);
         //创建人物绘制类对象
-        mPerson = new Person(mPaint, radius, bitmap);
+        mPerson = new Person(mPaint, radius, bitmapr);
         mPerson.mPersonY = 300;
         mPerson.mPersonX = mLayoutWidth / 2;
         //初始化分数绘制对象
@@ -230,17 +231,6 @@ public class GameLayout extends View {
         mPaint.setTextSize(mTextSize);
         mScore.drawScore(canvas, mTotalScore + "");
     }
-
-    /**
-     * 据初始位置，生成障碍物,难点
-     * 1.绘制时，每一个障碍物间的距离是一致的
-     * 2.绘制时，都是从第一个障碍物开始绘制
-     * 3.循环绘制，并把障碍物的x，y位置，分别保存在数组中
-     * 4.障碍物逐渐上升，当障碍物超出边界时，我们删除数组中保存的
-     * 第一个位置的x，但是保持原有下面已经出现过得障碍物x的位置
-     * 并在最后添加新的障碍物的位置；y位置，每次都重新生成，重新
-     * 保存在数组中
-     */
     private void generateBarrier(Canvas canvas) {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(Color.DKGRAY);
@@ -377,10 +367,10 @@ public class GameLayout extends View {
 
     //控制小人向左移动
     public void moveLeft() {
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.zoml);
         int x = mPerson.mPersonX;
         int y = mPerson.mPersonY;
-        mPerson = new Person(mPaint, radius, bitmap);
+        //  mPerson = new Person(mPaint, radius, bitmap);
+        mPerson.setBitmap(bitmapl);
         mPerson.mPersonX = x;
         mPerson.mPersonY = y;
         int dir = x - mPersonMoveSpeed;
@@ -397,11 +387,9 @@ public class GameLayout extends View {
      * 类似moveLeft
      */
     public void moveRight() {
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.zomr);
-        //mPerson = new Person(mPaint, radius, bitmap);
         int y = mPerson.mPersonY;
         int x = mPerson.mPersonX;
-        mPerson = new Person(mPaint, radius, bitmap);
+        mPerson.setBitmap(bitmapr);
         mPerson.mPersonX = x;
         mPerson.mPersonY = y;
         int dir = x + mPersonMoveSpeed;

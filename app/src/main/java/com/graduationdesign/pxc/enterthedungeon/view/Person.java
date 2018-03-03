@@ -13,8 +13,13 @@ public class Person {
     //下边缘坐标
     public int mPersonY;
     public int mPersonX;
-    private Bitmap bitmap;
 
+
+
+    private Bitmap bitmap;
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 
     public Person(Paint paint, int radius, Bitmap bitmap) {
         this.mPaint = paint;
