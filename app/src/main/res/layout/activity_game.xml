@@ -5,15 +5,11 @@
     android:background="@drawable/main_bg2">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/up" />
-    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:background="@drawable/teng" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,52 +17,17 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/up" />
-
         <com.graduationdesign.pxc.enterthedungeon.view.GameLayout
             android:id="@+id/game"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:fitsSystemWindows="true" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/left"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:alpha="0.1 "
-                android:fitsSystemWindows="true"
-                android:text="向左" />
-
-            <Button
-                android:id="@+id/right"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:alpha="0.1 "
-                android:fitsSystemWindows="true"
-                android:text="向右" />
-
-        </LinearLayout>
     </LinearLayout>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:background="@drawable/teng" />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/down" />
 </RelativeLayout>

@@ -42,13 +42,21 @@ public class GameLayout extends View {
     private MyHandler myHandler;
     //障碍上升加速度
     private int mBarrierMoveSpeed = 10;//8简单10普通12难15炼狱
+
+    //地形
+    private Spike mSpike;//顶上刺
+    private Hellfire mHellfire;//地狱火
+    private Bitmap bSpike = BitmapFactory.decodeResource(getResources(), R.drawable.up);//顶上刺
+    private Bitmap bHellfire = BitmapFactory.decodeResource(getResources(), R.drawable.down);//地狱火
+
     //人物是否自动下落状态
     private boolean isAutoFall;
     //人物左右移动的速度
-    private int mPersonMoveSpeed = 20;
+    private int mPersonMoveSpeed = 10;
+
     //游戏是否正在运行
     private boolean isRunning;
-    private Bitmap ding = BitmapFactory.decodeResource(getResources(), R.drawable.up);//顶部尖刺
+
 
     private Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marios);
     private Bitmap bitmap4 = BitmapFactory.decodeResource(getResources(), R.drawable.mario4);//左
@@ -95,6 +103,7 @@ public class GameLayout extends View {
     private int mButtonHeight = 120;
     private int Padding = 20;
 
+
     public GameLayout(Context context) {
         super(context);
         init();
@@ -123,6 +132,7 @@ public class GameLayout extends View {
         mBarrierYs = new ArrayList<>();
         //用来记录画面中，每一个障碍物的类型
         mBarrierTs = new ArrayList<>();
+
         //将文字大小转化成DP
         mTextSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, mTextSize, getResources().getDisplayMetrics());
         //启动游戏
@@ -145,6 +155,16 @@ public class GameLayout extends View {
         mPerson = new Person(mPaint, radius, bitmap);
         mPerson.mPersonY = 300;
         mPerson.mPersonX = mLayoutWidth / 2;
+
+
+        //初始化地形对象
+        mSpike = new Spike(mLayoutWidth, mPaint, bSpike);//顶上刺
+        mHellfire = new Hellfire(mLayoutWidth, mPaint, bHellfire);//地狱火
+        mSpike.mTerrainX = 0;
+        mHellfire.mTerrainX = 0;
+        mSpike.mTerrainY = 0;
+        mHellfire.mTerrainY = mLayoutHeight - mHellfire.dHeight;
+
         //初始化分数绘制对象
         mScore = new Score(mPaint);
         mScore.x = mLayoutWidth / 2 - mScore.panelWidth / 2;
@@ -162,6 +182,7 @@ public class GameLayout extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        generateTerrain(canvas);
         //绘制分数面板
         generateScore(canvas);
         //绘制障碍物
@@ -207,6 +228,8 @@ public class GameLayout extends View {
         mPaint.setTextSize(mTextSize * 1.5f);
         mPaint.setColor(Color.parseColor("#cc0000"));
         mPaint.setFakeBoldText(false);
+        mPaint.setAntiAlias(true);//设置抗锯齿，否则斜线等会有锯齿
+        mPaint.setSubpixelText(true);//设置亚像素，可以让文字更加清晰明显，对文本设置的一种优化
         canvas.drawText("Game over", mLayoutWidth / 2, mLayoutHeight / 2, mPaint);
     }
 
@@ -223,6 +246,16 @@ public class GameLayout extends View {
         int y = (int) (rectF.top + textHeight / 2 + (rectF.bottom - rectF.top) / 2 - fontMetrics.bottom);
         canvas.drawText(text, rectF.left + mButtonWidth / 2, y, mPaint);
 
+    }
+
+    /**
+     * 绘制地形
+     */
+    private void generateTerrain(Canvas canvas) {
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setColor(Color.parseColor("#666666"));
+        mHellfire.drawTerrain(canvas);
+        mSpike.drawTerrain(canvas);
     }
 
     /**
@@ -329,7 +362,7 @@ public class GameLayout extends View {
         } else if (mPerson.getBitmap().equals(bitmap4) || mPerson.getBitmap().equals(bitmap5) || mPerson.getBitmap().equals(bitmap6)) {
             mPerson.setBitmap(bitmap4);
         }
-        return mPerson.mPersonY < 0 || mPerson.mPersonY > mLayoutHeight - 2 * radius;
+        return mPerson.mPersonY < 120 || mPerson.mPersonY > mLayoutHeight - 60 - 2 * radius;
     }
 
     /**
@@ -337,7 +370,7 @@ public class GameLayout extends View {
      */
     private boolean isTouchBarrier(int x, int y) {
         boolean res = false;
-        int pY = mPerson.mPersonY + radius * 5 / 3;
+        double pY = mPerson.mPersonY + radius * 5 / 3;
         //在瞬间刷新的时候，只要小人的位置和障碍的位置，差值在小人和障碍物的瞬间刷新的最大值就属于碰撞
         //比如：小人下落速度为a,障碍物上升速度为b,画面刷新时间为t,瞬间刷新，会有个最大差值，这个值就是
         //临界值
@@ -400,8 +433,7 @@ public class GameLayout extends View {
     //控制小人向左移动
     public void moveLeft() {
         if (isRunning) {
-            int x = mPerson.mPersonX;
-            //mPerson.setBitmap(bitmapl);
+            double x = mPerson.mPersonX;
             if (mPerson.getBitmap().equals(bitmap4)) {
                 mPerson.setBitmap(bitmap5);
             } else if (mPerson.getBitmap().equals(bitmap5)) {
@@ -409,7 +441,7 @@ public class GameLayout extends View {
             } else {
                 mPerson.setBitmap(bitmap4);
             }
-            int dir = x - mPersonMoveSpeed;
+            double dir = x - mPersonMoveSpeed;
             if (dir < 0)
                 dir = 0;
             mPerson.mPersonX = dir;
@@ -424,7 +456,7 @@ public class GameLayout extends View {
      */
     public void moveRight() {
         if (isRunning) {
-            int x = mPerson.mPersonX;
+            double x = mPerson.mPersonX;
             if (mPerson.getBitmap().equals(bitmap1)) {
                 mPerson.setBitmap(bitmap2);
             } else if (mPerson.getBitmap().equals(bitmap2)) {
@@ -432,7 +464,7 @@ public class GameLayout extends View {
             } else {
                 mPerson.setBitmap(bitmap1);
             }
-            int dir = x + mPersonMoveSpeed;
+            double dir = x + mPersonMoveSpeed;
             if (dir > mLayoutWidth - radius * 2)
                 dir = mLayoutWidth - radius * 2;
             mPerson.mPersonX = dir;
@@ -442,7 +474,7 @@ public class GameLayout extends View {
     }
 
     //移动超出板子
-    private void checkIsOutSide(int x) {
+    private void checkIsOutSide(double x) {
         isAutoFall = true;
     }
 
@@ -450,27 +482,48 @@ public class GameLayout extends View {
         isRunning = false;
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                //游戏正在运行，没有生成菜单
-                if (isRunning)
-                    break;
-                //获取触摸位置信息
-                float x = event.getX();
-                float y = event.getY();
-                //如果触摸到重启游戏的按钮，触发
-                if (mRestartRectf.contains(x, y)) {
-                    restartGame();
-                } else if (mQuiteRectf.contains(x, y)) {//触摸到退出按钮
-                    System.exit(0);
-
+        //按下坐标
+        float downx = mLayoutWidth / 2;
+        float downy = 0;
+        //离开坐标
+        float upx = 0;
+        float upy = 0;
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            //获取触摸位置信息
+            downx = event.getX();
+            downy = event.getY();
+            if (isRunning) {
+                if (mLayoutWidth / 2 - downx > 0) {
+                    moveLeft();
+                } else if (mLayoutWidth / 2 - downx < 0) {
+                    moveRight();
                 }
-                break;
-
+            }
+            //游戏正在运行，没有生成菜单，执行控制器
+            if (!isRunning) {
+                //如果触摸到重启游戏的按钮，触发
+                if (mRestartRectf.contains(downx, downy)) {
+                    restartGame();
+                } else if (mQuiteRectf.contains(downx, downy)) {//触摸到退出按钮
+                    System.exit(0);
+                }
+            }
         }
-        return super.onTouchEvent(event);
+        if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            upx = event.getX();
+            if (downx - upx > 0) {
+                //Toast.makeText(getContext(), "左x="+downx+",upx="+upx, Toast.LENGTH_SHORT).show();
+                moveLeft();
+            } else if (downx - upx < 0) {
+                //  Toast.makeText(getContext(), "右x="+downx+",upx="+upx, Toast.LENGTH_SHORT).show();
+                moveRight();
+            }
+        }
+        return true;
+        // return super.onTouchEvent(event);
     }
 
     /**

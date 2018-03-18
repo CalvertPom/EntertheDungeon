@@ -12,28 +12,39 @@ public class Person {
     private int mHeaderRadius;
     private Paint mPaint;
     //下边缘坐标
-    public int mPersonY;
-    public int mPersonX;
+    public double mPersonY;
+    public double mPersonX;
+    private float x = 0;
+    private float y = 0;
 
-    public void setmPersonY(int mPersonY) {
-        this.mPersonY = mPersonY;
+    public void move(float offsetX, float offsetY){
+        x += offsetX;
+        y += offsetY;
     }
 
+    public void moveTo(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
+    public void centerTo(float centerX, float centerY){
+        float w = mHeaderRadius*7/6;
+        float h = mHeaderRadius * 5/3;
+        x = centerX - w / 2;
+        y = centerY - h / 2;
+    }
     private Bitmap bitmap;
-
     public Bitmap getBitmap() {
         return bitmap;
     }
-
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
-
     public Person(Paint paint, int radius, Bitmap bitmap) {
         this.mPaint = paint;
         this.mHeaderRadius = radius;
         this.bitmap = bitmap;
     }
+
 
 
     /**
@@ -43,9 +54,9 @@ public class Person {
 
         canvas.save();
         Path path = new Path();
-        path.addCircle(mPersonX + mHeaderRadius, mPersonY + mHeaderRadius, mHeaderRadius * 3, Path.Direction.CCW);
+        path.addCircle((int)mPersonX + mHeaderRadius, (int)mPersonY + mHeaderRadius, mHeaderRadius*3, Path.Direction.CCW);
         canvas.clipPath(path);
-        canvas.drawBitmap(bitmap, null, new RectF(mPersonX, mPersonY, mPersonX + mHeaderRadius * 7 / 6, mPersonY + mHeaderRadius * 5 / 3), mPaint);
+        canvas.drawBitmap(bitmap, null, new RectF((int)mPersonX, (int)mPersonY, (int)mPersonX +   mHeaderRadius*7/6, (int)mPersonY + mHeaderRadius * 5/3), mPaint);
         canvas.restore();
     }
 
