@@ -16,9 +16,11 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.graduationdesign.pxc.enterthedungeon.R;
+import com.graduationdesign.pxc.enterthedungeon.util.Music;
 import com.graduationdesign.pxc.enterthedungeon.util.PositionUtil;
 
 import java.util.ArrayList;
+
 
 /**
  * 游戏布局
@@ -35,6 +37,8 @@ public class GameLayout extends View {
     private Score mScore;
     //画笔
     private Paint mPaint;
+
+
     //小人的圆形半径
     private int radius = 50;
     //不断绘制的线程
@@ -45,7 +49,7 @@ public class GameLayout extends View {
 
     //地形
     private Spike mSpike;//顶上刺
-    private Hellfire mHellfire;//地狱火
+    //private Hellfire mHellfire;//地狱火
     private Bitmap bSpike = BitmapFactory.decodeResource(getResources(), R.drawable.up);//顶上刺
     private Bitmap bHellfire = BitmapFactory.decodeResource(getResources(), R.drawable.down);//地狱火
 
@@ -58,14 +62,16 @@ public class GameLayout extends View {
     private boolean isRunning;
 
 
-    private Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marios);
-    private Bitmap bitmap4 = BitmapFactory.decodeResource(getResources(), R.drawable.mario4);//左
-    private Bitmap bitmap5 = BitmapFactory.decodeResource(getResources(), R.drawable.mario5);//左
-    private Bitmap bitmap6 = BitmapFactory.decodeResource(getResources(), R.drawable.mario6);//左
-    private Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.mario1);//右
-    private Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.mario2);//右
-    private Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), R.drawable.mario3);//右
-    private Bitmap bitmapd = BitmapFactory.decodeResource(getResources(), R.drawable.mariod);//输了
+    private Bitmap bmans = BitmapFactory.decodeResource(getResources(), R.drawable.jerryd1);
+    private Bitmap bmanl1 = BitmapFactory.decodeResource(getResources(), R.drawable.jerryl1);//左
+    private Bitmap bmanl2 = BitmapFactory.decodeResource(getResources(), R.drawable.jerryl2);//左
+    private Bitmap bmanl3 = BitmapFactory.decodeResource(getResources(), R.drawable.jerryl3);//左
+    private Bitmap bmanl4 = BitmapFactory.decodeResource(getResources(), R.drawable.jerryl4);//左
+    private Bitmap bmanr1 = BitmapFactory.decodeResource(getResources(), R.drawable.jerryr1);//右
+    private Bitmap bmanr2 = BitmapFactory.decodeResource(getResources(), R.drawable.jerryr2);//右
+    private Bitmap bmanr3 = BitmapFactory.decodeResource(getResources(), R.drawable.jerryr3);//右
+    private Bitmap bmanr4 = BitmapFactory.decodeResource(getResources(), R.drawable.jerryr4);//右
+    private Bitmap bmand = BitmapFactory.decodeResource(getResources(), R.drawable.jerrydead);//输了
     //需要绘制的障碍
     private Bitmap bitplat;
     private Bitmap bitplatd;//加速
@@ -104,6 +110,23 @@ public class GameLayout extends View {
     private int Padding = 20;
 
 
+    //屏幕密度
+    private float density = getResources().getDisplayMetrics().density;
+    //音乐对象
+    private Music bgm;
+    //音乐暂停
+    //暂停按钮的对象
+    private RectF mBBPRectf;
+    private Anniu mButtonbgmPause;
+    //暂停图标
+    private Bitmap stopm = BitmapFactory.decodeResource(getResources(), R.drawable.startm);//暂停状态
+    private Bitmap startm = BitmapFactory.decodeResource(getResources(), R.drawable.stopm);//播放状态
+    //音乐状态
+    public static final int STATUS_BGM_STARTED = 1;//音乐开始
+    public static final int STATUS_BGM_PAUSED = 2;//音乐暂停
+    public static final int STATUS_BGM_STILL = 3;//音乐在播
+    private int status = STATUS_BGM_STARTED;//初始为音乐开始状态
+
     public GameLayout(Context context) {
         super(context);
         init();
@@ -122,7 +145,7 @@ public class GameLayout extends View {
         mPaint.setStrokeWidth(10);
         //读取障碍的图片
         bitplat = BitmapFactory.decodeResource(getResources(), R.drawable.plat);
-        bitplatd = BitmapFactory.decodeResource(getResources(), R.drawable.dplat);
+        bitplatd = BitmapFactory.decodeResource(getResources(), R.drawable.acc);
         //默认开始自动下落
         isAutoFall = true;
         myHandler = new MyHandler();
@@ -132,7 +155,6 @@ public class GameLayout extends View {
         mBarrierYs = new ArrayList<>();
         //用来记录画面中，每一个障碍物的类型
         mBarrierTs = new ArrayList<>();
-
         //将文字大小转化成DP
         mTextSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, mTextSize, getResources().getDisplayMetrics());
         //启动游戏
@@ -152,18 +174,22 @@ public class GameLayout extends View {
         mBarrier = new Barrier(mLayoutWidth, mPaint, bitplat);
         mBarrier.setHeight(mBarrierHeight);
         //创建人物绘制类对象
-        mPerson = new Person(mPaint, radius, bitmap);
+        mPerson = new Person(mPaint, radius, bmans);
         mPerson.mPersonY = 300;
         mPerson.mPersonX = mLayoutWidth / 2;
 
+        //绘制左上角的暂停按钮
+
+        mButtonbgmPause = new Anniu(mPaint, startm);
+        mBBPRectf = new RectF(15 * density, 15 * density, 15 * density + mButtonbgmPause.bWidth, 15 * density + mButtonbgmPause.bHeight);
 
         //初始化地形对象
         mSpike = new Spike(mLayoutWidth, mPaint, bSpike);//顶上刺
-        mHellfire = new Hellfire(mLayoutWidth, mPaint, bHellfire);//地狱火
+        //mHellfire = new Hellfire(mLayoutWidth, mPaint, bHellfire);//地狱火
         mSpike.mTerrainX = 0;
-        mHellfire.mTerrainX = 0;
+        // mHellfire.mTerrainX = 0;
         mSpike.mTerrainY = 0;
-        mHellfire.mTerrainY = mLayoutHeight - mHellfire.dHeight;
+        //  mHellfire.mTerrainY = mLayoutHeight - mHellfire.dHeight;
 
         //初始化分数绘制对象
         mScore = new Score(mPaint);
@@ -187,6 +213,7 @@ public class GameLayout extends View {
         generateScore(canvas);
         //绘制障碍物
         generateBarrier(canvas);
+        drawbBGM(canvas);
         //如果小人正在下落，才检测是否碰撞
         if (isAutoFall)
             checkTouch();
@@ -198,7 +225,7 @@ public class GameLayout extends View {
         //如果游戏结束
 
         if (!isRunning) {
-            mPerson.setBitmap(bitmapd);
+            mPerson.setBitmap(bmand);
             //绘制面板
             drawPanel(canvas);
             //绘制游戏结束数字
@@ -209,6 +236,14 @@ public class GameLayout extends View {
         }
     }
 
+    //绘制bgm按钮
+    private void drawbBGM(Canvas canvas) {
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setColor(Color.DKGRAY);
+        mButtonbgmPause.bX = 15 * density;
+        mButtonbgmPause.bY = 15 * density;
+        mButtonbgmPause.draw(canvas);
+    }
 
     /**
      * 绘制结束弹出框的背景区域
@@ -254,7 +289,7 @@ public class GameLayout extends View {
     private void generateTerrain(Canvas canvas) {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(Color.parseColor("#666666"));
-        mHellfire.drawTerrain(canvas);
+        // mHellfire.drawTerrain(canvas);
         mSpike.drawTerrain(canvas);
     }
 
@@ -327,7 +362,7 @@ public class GameLayout extends View {
             //如果是小于0,表示没有阻挡,
             if (mTouchIndex >= 0) {
                 //设置小人被阻挡的位置，被进行绘制
-                mPerson.mPersonY = mBarrierYs.get(mTouchIndex) - 2 * radius;
+                mPerson.mPersonY = mBarrierYs.get(mTouchIndex) - radius * 5 / 3;
                 mPerson.draw(canvas);
             }
         }
@@ -357,12 +392,12 @@ public class GameLayout extends View {
 
     //操作是否完成
     private boolean checkIsGameOver() {
-        if (mPerson.getBitmap().equals(bitmap1) || mPerson.getBitmap().equals(bitmap2) || mPerson.getBitmap().equals(bitmap3)) {
-            mPerson.setBitmap(bitmap1);
-        } else if (mPerson.getBitmap().equals(bitmap4) || mPerson.getBitmap().equals(bitmap5) || mPerson.getBitmap().equals(bitmap6)) {
-            mPerson.setBitmap(bitmap4);
+        if (mPerson.getBitmap().equals(bmanr1) || mPerson.getBitmap().equals(bmanr2) || mPerson.getBitmap().equals(bmanr3) || mPerson.getBitmap().equals(bmanr4)) {
+            mPerson.setBitmap(bmanr1);
+        } else if (mPerson.getBitmap().equals(bmanl1) || mPerson.getBitmap().equals(bmanl2) || mPerson.getBitmap().equals(bmanl3) || mPerson.getBitmap().equals(bmanl4)) {
+            mPerson.setBitmap(bmanl1);
         }
-        return mPerson.mPersonY < 120 || mPerson.mPersonY > mLayoutHeight - 60 - 2 * radius;
+        return mPerson.mPersonY < 120 || mPerson.mPersonY > mLayoutHeight - radius * 5 / 3;
     }
 
     /**
@@ -382,12 +417,32 @@ public class GameLayout extends View {
         return res;
     }
 
+    private void initbgm() {
+        bgm.play(getContext(), R.raw.bgm4);
+        status = STATUS_BGM_STILL;
+    }
+
+    private void bgmStart() {
+        mButtonbgmPause.setBitmap(startm);
+        bgm.play(getContext(), R.raw.bgm4);
+        status = STATUS_BGM_STILL;//=3;//音乐在播
+    }
+
+    private void bgmStop() {
+        mButtonbgmPause.setBitmap(stopm);
+        bgm.stop(getContext());
+        status = STATUS_BGM_PAUSED;
+    }
 
     public void startGame() {
         mThread = new Thread() {
             @Override
             public void run() {
                 super.run();
+                if (status == STATUS_BGM_STARTED)//音乐开始
+                {
+                    initbgm();
+                }
                 while (isRunning) {
                     //开始让障碍往上面滚动,障碍物的绘制，是跟mBarrierStartY相关的
                     mBarrierStartY -= mBarrierMoveSpeed;
@@ -434,12 +489,14 @@ public class GameLayout extends View {
     public void moveLeft() {
         if (isRunning) {
             double x = mPerson.mPersonX;
-            if (mPerson.getBitmap().equals(bitmap4)) {
-                mPerson.setBitmap(bitmap5);
-            } else if (mPerson.getBitmap().equals(bitmap5)) {
-                mPerson.setBitmap(bitmap6);
+            if (mPerson.getBitmap().equals(bmanl1)) {
+                mPerson.setBitmap(bmanl2);
+            } else if (mPerson.getBitmap().equals(bmanl2)) {
+                mPerson.setBitmap(bmanl3);
+            } else if (mPerson.getBitmap().equals(bmanl3)) {
+                mPerson.setBitmap(bmanl4);
             } else {
-                mPerson.setBitmap(bitmap4);
+                mPerson.setBitmap(bmanl1);
             }
             double dir = x - mPersonMoveSpeed;
             if (dir < 0)
@@ -457,16 +514,18 @@ public class GameLayout extends View {
     public void moveRight() {
         if (isRunning) {
             double x = mPerson.mPersonX;
-            if (mPerson.getBitmap().equals(bitmap1)) {
-                mPerson.setBitmap(bitmap2);
-            } else if (mPerson.getBitmap().equals(bitmap2)) {
-                mPerson.setBitmap(bitmap3);
+            if (mPerson.getBitmap().equals(bmanr1)) {
+                mPerson.setBitmap(bmanr2);
+            } else if (mPerson.getBitmap().equals(bmanr2)) {
+                mPerson.setBitmap(bmanr3);
+            } else if (mPerson.getBitmap().equals(bmanr3)) {
+                mPerson.setBitmap(bmanr4);
             } else {
-                mPerson.setBitmap(bitmap1);
+                mPerson.setBitmap(bmanr1);
             }
             double dir = x + mPersonMoveSpeed;
-            if (dir > mLayoutWidth - radius * 2)
-                dir = mLayoutWidth - radius * 2;
+            if (dir > mLayoutWidth - radius * 5 / 3)
+                dir = mLayoutWidth - radius * 5 / 3;
             mPerson.mPersonX = dir;
             checkIsOutSide(dir);
             invalidate();
@@ -495,6 +554,14 @@ public class GameLayout extends View {
             //获取触摸位置信息
             downx = event.getX();
             downy = event.getY();
+            if (mBBPRectf.contains(downx, downy)) {
+                if (status == STATUS_BGM_PAUSED)//音乐开始
+                {
+                    bgmStart();
+                } else if (status == STATUS_BGM_STILL) {
+                    bgmStop();
+                }
+            }
             if (isRunning) {
                 if (mLayoutWidth / 2 - downx > 0) {
                     moveLeft();
@@ -522,6 +589,7 @@ public class GameLayout extends View {
                 moveRight();
             }
         }
+
         return true;
         // return super.onTouchEvent(event);
     }
@@ -534,7 +602,7 @@ public class GameLayout extends View {
         mBarrierYs.clear();
         mBarrierTs.clear();
         mBarrierStartY = 500;
-        mPerson.setBitmap(bitmap);
+        mPerson.setBitmap(bmans);
         mPerson.mPersonY = 300;
         mPerson.mPersonX = mLayoutWidth / 2;
         mTotalScore = 0;

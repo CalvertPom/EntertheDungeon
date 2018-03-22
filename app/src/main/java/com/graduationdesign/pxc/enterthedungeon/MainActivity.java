@@ -8,6 +8,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.graduationdesign.pxc.enterthedungeon.view.BackGroundStory;
+
 public class MainActivity extends AppCompatActivity {
 
     Button startButton;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,GameActivity.class);
+                Intent intent = new Intent(MainActivity.this, BackGroundStory.class);
                 startActivity(intent);
                 finish();
             }
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         scoreboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,ScoreBoardActivity.class);
+                Intent intent = new Intent(MainActivity.this, ScoreBoardActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         optionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,OptionsActivity.class);
+                Intent intent = new Intent(MainActivity.this, OptionsActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         moreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,MoreActivity.class);
+                Intent intent = new Intent(MainActivity.this, MoreActivity.class);
                 startActivity(intent);
                 finish();
             }

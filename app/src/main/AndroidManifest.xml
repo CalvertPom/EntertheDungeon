@@ -28,7 +28,8 @@
             android:theme="@style/TouminTheme" />
         <activity
             android:name=".OptionsActivity"
-            android:theme="@style/TouminTheme"></activity>
+            android:theme="@style/TouminTheme" />
+        <activity android:name=".view.BackGroundStory"></activity>
     </application>
 
 </manifest>
