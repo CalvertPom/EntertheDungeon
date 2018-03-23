@@ -21,7 +21,6 @@ import com.graduationdesign.pxc.enterthedungeon.util.PositionUtil;
 
 import java.util.ArrayList;
 
-
 /**
  * 游戏布局
  */
@@ -405,12 +404,12 @@ public class GameLayout extends View {
      */
     private boolean isTouchBarrier(int x, int y) {
         boolean res = false;
-        double pY = mPerson.mPersonY + radius * 5 / 3;
+        double pY = mPerson.mPersonY + radius * 5/3;
         //在瞬间刷新的时候，只要小人的位置和障碍的位置，差值在小人和障碍物的瞬间刷新的最大值就属于碰撞
         //比如：小人下落速度为a,障碍物上升速度为b,画面刷新时间为t,瞬间刷新，会有个最大差值，这个值就是
         //临界值
-        if (Math.abs(pY - y) <= Math.abs(mBarrierMoveSpeed + Person.SPEED + mFallTime / 1000 * G)) {
-            if (mPerson.mPersonX + radius * 7 / 6 >= x && mPerson.mPersonX <= x + mBarrier.getWidth()) {
+        if (Math.abs(pY - y) <= Math.abs(mBarrierMoveSpeed+mBarrier.getmHeight() + Person.SPEED + mFallTime / 1000 * G)) {
+            if (mPerson.mPersonX + radius * 7/6 >= x && mPerson.mPersonX <= x + mBarrier.getWidth()) {
                 res = true;
             }
         }

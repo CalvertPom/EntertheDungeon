@@ -1,6 +1,5 @@
 package com.graduationdesign.pxc.enterthedungeon.view;
 
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -22,11 +21,15 @@ public class Barrier {
     //private int mType;
     //障碍物的宽度
     private int mWidth;
+
+
     //障碍物的高度
     private int mHeight;
     //屏幕的宽度
     private int mScreenWidth;
+
     private Paint mPaint;
+
 
     //不同类型换图
     public void setBitmap(Bitmap bitmap) {
@@ -52,8 +55,13 @@ public class Barrier {
         canvas.restore();
     }
 
+
     public void setHeight(int mHeight) {
         this.mHeight = mHeight;
+    }
+
+    public int getmHeight() {
+        return mHeight;
     }
 
     public int getWidth() {

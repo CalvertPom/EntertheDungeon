@@ -14,24 +14,6 @@ public class Person {
     //下边缘坐标
     public double mPersonY;
     public double mPersonX;
-    private float x = 0;
-    private float y = 0;
-
-    public void move(float offsetX, float offsetY){
-        x += offsetX;
-        y += offsetY;
-    }
-
-    public void moveTo(float x, float y){
-        this.x = x;
-        this.y = y;
-    }
-    public void centerTo(float centerX, float centerY){
-        float w = mHeaderRadius*7/6;
-        float h = mHeaderRadius * 5/3;
-        x = centerX - w / 2;
-        y = centerY - h / 2;
-    }
     private Bitmap bitmap;
     public Bitmap getBitmap() {
         return bitmap;
