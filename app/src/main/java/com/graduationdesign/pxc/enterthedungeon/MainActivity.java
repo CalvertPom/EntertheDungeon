@@ -8,14 +8,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.graduationdesign.pxc.enterthedungeon.view.BackGroundStory;
+import org.litepal.tablemanager.Connector;
 
 public class MainActivity extends AppCompatActivity {
 
     Button startButton;
     Button scoreboardButton;
-    Button optionsButton;
-    Button moreButton;
+    Button aboutautButton;
+    Button bgstoryButton;
     Button escButton;
 
     @Override
@@ -27,16 +27,17 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        //数据库搭建
+        Connector.getDatabase();
         startButton = (Button) findViewById(R.id.start);
         scoreboardButton = (Button) findViewById(R.id.score_board);
-        optionsButton = (Button) findViewById(R.id.options);
-        moreButton = (Button) findViewById(R.id.more_app);
+        bgstoryButton = (Button) findViewById(R.id.bgstory);
+        aboutautButton= (Button) findViewById(R.id.aboutaut);
         escButton = (Button) findViewById(R.id.esc);
-
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, BackGroundStory.class);
+                Intent intent = new Intent(MainActivity.this, GameActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -49,18 +50,18 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        optionsButton.setOnClickListener(new View.OnClickListener() {
+        aboutautButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, OptionsActivity.class);
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
-        moreButton.setOnClickListener(new View.OnClickListener() {
+        bgstoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MoreActivity.class);
+                Intent intent = new Intent(MainActivity.this, BackGroundStory.class);
                 startActivity(intent);
                 finish();
             }

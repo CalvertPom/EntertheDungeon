@@ -1,15 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:id="@+id/iteminfo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:gravity="center"
-        android:text="得分榜"
-        android:textSize="50dp" />
+        android:layout_weight="0.06"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="排行榜"
+                android:textColor="#8C6931"
+                android:textSize="50dp" />
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/linearLayoutt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvxu"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1 "
+                android:paddingLeft="10dp"
+                android:text="获得成绩时间" />
+
+            <TextView
+                android:id="@+id/tvscore"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1 "
+                android:text="分数" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ListView
+            android:id="@+id/lvinscoreinfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarAlwaysDrawVerticalTrack="true" />
+
+    </LinearLayout>
 </LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/aboutbj"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/jianjie">
+
+
+    <Button
+        android:id="@+id/btabout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="关于" />
+
+    <Button
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/bhelp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="帮助" />
+
+
+</LinearLayout>
+

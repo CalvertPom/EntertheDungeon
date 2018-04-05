@@ -1,6 +1,5 @@
 package com.graduationdesign.pxc.enterthedungeon.view;
 
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -22,7 +21,7 @@ public class Terrain {
     }
 
     //地形的高度
-    public  int dHeight;
+    public int dHeight;
     // 当前的地形图片
     private Bitmap bitmap;
 
@@ -31,15 +30,16 @@ public class Terrain {
     private Paint mPaint;
 
 
-    public Terrain (int screenWidth,Paint paint, Bitmap bitmap) {
+    public Terrain(int screenWidth, Paint paint, Bitmap bitmap) {
         this.mPaint = paint;
         this.mScreenWidth = screenWidth;
         this.dWidth = mScreenWidth;
         this.bitmap = bitmap;
     }
+
     public void drawTerrain(Canvas canvas) {
         canvas.save();
-        canvas.drawBitmap(bitmap, null, new RectF(mTerrainX, mTerrainY , mTerrainX + dWidth,  mTerrainY+ dHeight), mPaint);
+        canvas.drawBitmap(bitmap, null, new RectF(mTerrainX, mTerrainY, mTerrainX + dWidth, mTerrainY + dHeight), mPaint);
         canvas.restore();
     }
 }

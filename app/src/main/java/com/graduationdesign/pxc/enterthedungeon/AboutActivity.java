@@ -8,12 +8,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
-import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.GifImageView;
-
-public class BackGroundStory extends AppCompatActivity {
-
+public class AboutActivity extends AppCompatActivity {
+    LinearLayout layout1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,30 +20,24 @@ public class BackGroundStory extends AppCompatActivity {
         //隐藏状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_back_ground_story);
-
-
-        GifImageView gifImageView1 = (GifImageView) findViewById(R.id.gif1);
-
-        try {
-            // 如果加载的是gif动图，第一步需要先将gif动图资源转化为GifDrawable
-            // 将gif图资源转化为GifDrawable
-            GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.backgroudstory);
-
-            // gif1加载一个动态图gif
-            gifImageView1.setImageDrawable(gifDrawable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Button button = (Button) findViewById(R.id.pass);
-
-        button.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_about);
+        Button button1 = (Button) findViewById(R.id.btabout);
+        Button button2 = (Button) findViewById(R.id.bhelp);
+        layout1=(LinearLayout)findViewById(R.id.aboutbj);
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                    Intent intent = new Intent(BackGroundStory.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                layout1.setBackgroundResource(R.drawable.jianjie);
+
+            }
+
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                layout1.setBackgroundResource(R.drawable.abouthelp);
 
             }
 
@@ -55,7 +47,7 @@ public class BackGroundStory extends AppCompatActivity {
         if (keyCode == KeyEvent.KEYCODE_HOME) {
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            Intent intent = new Intent(BackGroundStory.this, MainActivity.class);
+            Intent intent = new Intent(AboutActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
             return true;

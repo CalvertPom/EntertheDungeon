@@ -1,6 +1,5 @@
 package com.graduationdesign.pxc.enterthedungeon.view;
 
-
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 

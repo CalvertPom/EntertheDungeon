@@ -1,76 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:background="@drawable/mbj"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/title_img"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/title2"
-        android:fitsSystemWindows="true"
-        android:scaleType="centerCrop" />
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:orientation="vertical"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
-        android:fitsSystemWindows="true"
+        android:layout_height="1dp"
+        android:layout_weight="2"
         android:gravity="center"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/start"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/start"
-            android:fitsSystemWindows="true"
-            android:gravity="center" />
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/start" />
 
         <Button
             android:id="@+id/score_board"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/score_board"
-            android:fitsSystemWindows="true"
-            android:gravity="center" />
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/score_board" />
 
         <Button
-            android:id="@+id/options"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/options"
-            android:fitsSystemWindows="true"
-            android:gravity="center" />
+            android:id="@+id/bgstory"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/bgstory" />
 
         <Button
-            android:id="@+id/more_app"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/more_app"
-            android:fitsSystemWindows="true"
-            android:gravity="center" />
+            android:id="@+id/aboutaut"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/aboutaut" />
 
         <Button
             android:id="@+id/esc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/esc"
-            android:fitsSystemWindows="true"
-            android:gravity="center" />
-
-        <ImageView
-            android:id="@+id/bottom_img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bottom"
-            android:fitsSystemWindows="true"
-            android:scaleType="centerCrop" />
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/esc" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:orientation="vertical"></LinearLayout>
 </LinearLayout>
